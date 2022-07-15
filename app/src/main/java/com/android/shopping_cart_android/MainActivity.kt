@@ -9,7 +9,9 @@ import androidx.navigation.compose.rememberNavController
 import com.android.shopping_cart_android.presentation.core.Screen
 import com.android.shopping_cart_android.presentation.screen.ShoppingCartScreen
 import com.android.shopping_cart_android.ui.theme.ShoppingcartandroidTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
