@@ -9,7 +9,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-@Module
+@Module(includes = [UseCaseModule::class])
 @InstallIn(SingletonComponent::class)
 object AppModule {
     @Singleton
