@@ -11,5 +11,4 @@ import androidx.room.RoomDatabase
 abstract class AppDatabase : RoomDatabase() {
     abstract val cartDao: CartDao
     abstract val productDao: ProductDao
-    abstract val cartWithProductDao: CartWithProductDao
 }
