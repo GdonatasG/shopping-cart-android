@@ -23,7 +23,7 @@ class CartRepository(
         return cartDao.delete(cartEntity = cartItem.toDatabase())
     }
 
-    override suspend fun updateCartItem(cartItem: CartItem) {
+    override suspend fun updateOrInsert(cartItem: CartItem) {
         return cartDao.insert(cartEntity = cartItem.toDatabase())
     }
 }
