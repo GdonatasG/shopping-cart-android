@@ -1,6 +1,7 @@
 package com.android.shopping_cart_android.di
 
 import com.android.shopping_cart_android.domain.ICartRepository
+import com.android.shopping_cart_android.domain.use_case.CalculateCartItemPriceUseCase
 import com.android.shopping_cart_android.domain.use_case.GetCartUseCase
 import com.android.shopping_cart_android.domain.use_case.RemoveCartItemUseCase
 import com.android.shopping_cart_android.domain.use_case.UpdateOrInsertCartItemUseCase
@@ -30,5 +31,11 @@ object UseCaseModule {
     @Provides
     fun provideRemoveCartItemUseCase(cartRepository: ICartRepository): RemoveCartItemUseCase {
         return RemoveCartItemUseCase(cartRepository = cartRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCalculateCartItemPriceUseCase(): CalculateCartItemPriceUseCase {
+        return CalculateCartItemPriceUseCase()
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.shopping_cart_android.domain.CartItem
+import com.android.shopping_cart_android.domain.use_case.CalculateCartItemPriceUseCase
 import com.android.shopping_cart_android.domain.use_case.GetCartUseCase
 import com.android.shopping_cart_android.domain.use_case.RemoveCartItemUseCase
 import com.android.shopping_cart_android.domain.use_case.UpdateOrInsertCartItemUseCase
@@ -19,6 +20,7 @@ class ShoppingCartViewModel @Inject constructor(
     private val getCartUseCase: GetCartUseCase,
     private val updateOrInsertCartItemUseCase: UpdateOrInsertCartItemUseCase,
     private val removeCartItemUseCase: RemoveCartItemUseCase,
+    private val calculateCartItemPriceUseCase: CalculateCartItemPriceUseCase,
 ) : ViewModel() {
     private var _state by mutableStateOf(ShoppingCartState())
     val state: ShoppingCartState
@@ -38,7 +40,7 @@ class ShoppingCartViewModel @Inject constructor(
     private fun calculatePrices(cart: List<CartItem>): List<CartItem> {
         return cart.map { cartItem ->
             cartItem.copy(
-                totalPrice = (cartItem.product.costPrice ?: cartItem.product.retailPrice).times(cartItem.quantity)
+                totalPrice = calculateCartItemPriceUseCase(cartItem = cartItem)
             )
 
         }
@@ -48,7 +50,7 @@ class ShoppingCartViewModel @Inject constructor(
         var totalSum = 0
 
         cart.forEach { cartItem ->
-            totalSum += ((cartItem.product.costPrice ?: cartItem.product.retailPrice).times(cartItem.quantity))
+            totalSum += calculateCartItemPriceUseCase(cartItem = cartItem)
         }
 
         return totalSum
