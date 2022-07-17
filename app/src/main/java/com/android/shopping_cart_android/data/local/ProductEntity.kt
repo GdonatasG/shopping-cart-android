@@ -1,6 +1,7 @@
 package com.android.shopping_cart_android.data.local
 
 import androidx.room.Entity
+import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.android.shopping_cart_android.domain.Product
 

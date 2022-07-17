@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.shopping_cart_android.domain.CartItem
 import com.android.shopping_cart_android.domain.use_case.GetCartUseCase
+import com.android.shopping_cart_android.domain.use_case.UpdateCartItemUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -15,6 +16,7 @@ import javax.inject.Inject
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
     private val getCartUseCase: GetCartUseCase,
+    private val updateCartItemUseCase: UpdateCartItemUseCase,
 ) : ViewModel() {
     private var _state by mutableStateOf(ShoppingCartState())
     val state: ShoppingCartState
@@ -54,7 +56,11 @@ class ShoppingCartViewModel @Inject constructor(
     fun onEvent(event: ShoppingCartEvent) {
         when (event) {
             is ShoppingCartEvent.ProductQuantityChanged -> {
-                // TODO: add implementation
+                viewModelScope.launch {
+                    val updatedCartItem: CartItem = state.cart[event.index].copy(quantity = event.quantity)
+                    updateCartItemUseCase(cartItem = updatedCartItem)
+                }
+
             }
         }
     }

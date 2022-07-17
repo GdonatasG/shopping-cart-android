@@ -50,7 +50,17 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
         }
 
         if (viewModel.state.cart.isNotEmpty()) {
-            BuildCartProductList(cart = viewModel.state.cart)
+            BuildCartProductList(
+                cart = viewModel.state.cart,
+                onQuantityChanged = { index, quantity ->
+                    viewModel.onEvent(
+                        ShoppingCartEvent.ProductQuantityChanged(
+                            index = index,
+                            quantity = quantity
+                        )
+                    )
+                },
+            )
             return@Scaffold
         }
 
@@ -84,7 +94,7 @@ private fun BuildEmptyCart() {
 }
 
 @Composable
-private fun BuildCartProductList(cart: List<CartItem>) {
+private fun BuildCartProductList(cart: List<CartItem>, onQuantityChanged: (index: Int, quantity: Int) -> Unit) {
     LazyColumn {
         itemsIndexed(cart) { index, cartItem ->
             Row(
@@ -129,8 +139,9 @@ private fun BuildCartProductList(cart: List<CartItem>) {
                     NumberPicker(
                         value = pickerStateValue,
                         range = 1..5,
-                        onValueChange = {
-                            pickerStateValue = it
+                        onValueChange = { value ->
+                            pickerStateValue = value
+                            onQuantityChanged(index, value)
                         }
                     )
                 }
