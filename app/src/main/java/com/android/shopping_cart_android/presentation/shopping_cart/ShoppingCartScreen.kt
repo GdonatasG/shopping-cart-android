@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -18,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.android.shopping_cart_android.domain.CartItem
+import com.android.shopping_cart_android.presentation.core.Screen
 import com.chargemap.compose.numberpicker.NumberPicker
 
 @Composable
@@ -41,6 +43,16 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
                     )
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate(Screen.Products.route) {
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }) {
+                Icon(Icons.Default.Add, contentDescription = "Add product")
+            }
         }
     ) {
         if (viewModel.state.isLoading) {
