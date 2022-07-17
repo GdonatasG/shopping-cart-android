@@ -28,6 +28,18 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
             TopAppBar(
                 title = {
                     Text(text = "Shopping Cart")
+                },
+                actions = {
+                    Text(text = "Full price:")
+                    Spacer(modifier = Modifier.width(5.dp))
+                    Text(
+                        text = viewModel.state.totalSum.toString(),
+                        style = TextStyle(
+                            fontWeight = FontWeight.Bold, color = Color.Red
+                        ),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
                 }
             )
         }
