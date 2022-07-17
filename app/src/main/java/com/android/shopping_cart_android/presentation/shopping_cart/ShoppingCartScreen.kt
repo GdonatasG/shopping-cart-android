@@ -6,13 +6,12 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,12 +59,16 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
                         )
                     )
                 },
+                onItemRemoved = { index ->
+                    viewModel.onEvent(
+                        ShoppingCartEvent.ProductRemoved(index = index)
+                    )
+                }
             )
             return@Scaffold
         }
 
         BuildEmptyCart()
-
     }
 }
 
@@ -94,7 +97,11 @@ private fun BuildEmptyCart() {
 }
 
 @Composable
-private fun BuildCartProductList(cart: List<CartItem>, onQuantityChanged: (index: Int, quantity: Int) -> Unit) {
+private fun BuildCartProductList(
+    cart: List<CartItem>,
+    onQuantityChanged: (index: Int, quantity: Int) -> Unit,
+    onItemRemoved: (index: Int) -> Unit,
+) {
     LazyColumn {
         itemsIndexed(cart) { index, cartItem ->
             Row(
@@ -135,19 +142,17 @@ private fun BuildCartProductList(cart: List<CartItem>, onQuantityChanged: (index
                 }
                 Spacer(modifier = Modifier.height(5.dp))
                 Row(modifier = Modifier.fillParentMaxWidth(0.3f)) {
-                    var pickerStateValue by remember { mutableStateOf(cartItem.quantity) }
                     NumberPicker(
-                        value = pickerStateValue,
+                        value = cartItem.quantity,
                         range = 1..5,
                         onValueChange = { value ->
-                            pickerStateValue = value
                             onQuantityChanged(index, value)
                         }
                     )
                 }
                 Spacer(Modifier.weight(1f))
                 Box {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { onItemRemoved(index) }) {
                         Icon(imageVector = Icons.Default.Clear, contentDescription = "Remove product")
                     }
                 }

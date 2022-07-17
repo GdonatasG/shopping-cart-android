@@ -12,6 +12,6 @@ interface CartDao {
     suspend fun delete(cartEntity: CartEntity)
 
     @Transaction
-    @Query("SELECT * FROM cart")
+    @Query("SELECT * FROM cart JOIN products on cart.productId = products.productId")
     fun getCart(): Flow<List<CartWithProduct>>
 }

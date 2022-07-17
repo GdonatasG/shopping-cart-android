@@ -2,7 +2,8 @@ package com.android.shopping_cart_android.di
 
 import com.android.shopping_cart_android.domain.ICartRepository
 import com.android.shopping_cart_android.domain.use_case.GetCartUseCase
-import com.android.shopping_cart_android.domain.use_case.UpdateCartItemUseCase
+import com.android.shopping_cart_android.domain.use_case.RemoveCartItemUseCase
+import com.android.shopping_cart_android.domain.use_case.UpdateOrInsertCartItemUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -21,7 +22,13 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideUpdateCartItemUseCase(cartRepository: ICartRepository): UpdateCartItemUseCase {
-        return UpdateCartItemUseCase(cartRepository = cartRepository)
+    fun provideUpdateCartItemUseCase(cartRepository: ICartRepository): UpdateOrInsertCartItemUseCase {
+        return UpdateOrInsertCartItemUseCase(cartRepository = cartRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideRemoveCartItemUseCase(cartRepository: ICartRepository): RemoveCartItemUseCase {
+        return RemoveCartItemUseCase(cartRepository = cartRepository)
     }
 }

@@ -7,7 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.shopping_cart_android.domain.CartItem
 import com.android.shopping_cart_android.domain.use_case.GetCartUseCase
-import com.android.shopping_cart_android.domain.use_case.UpdateCartItemUseCase
+import com.android.shopping_cart_android.domain.use_case.RemoveCartItemUseCase
+import com.android.shopping_cart_android.domain.use_case.UpdateOrInsertCartItemUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ShoppingCartViewModel @Inject constructor(
     private val getCartUseCase: GetCartUseCase,
-    private val updateCartItemUseCase: UpdateCartItemUseCase,
+    private val updateOrInsertCartItemUseCase: UpdateOrInsertCartItemUseCase,
+    private val removeCartItemUseCase: RemoveCartItemUseCase,
 ) : ViewModel() {
     private var _state by mutableStateOf(ShoppingCartState())
     val state: ShoppingCartState
@@ -26,7 +28,6 @@ class ShoppingCartViewModel @Inject constructor(
         viewModelScope.launch {
             _state = _state.copy(isLoading = true)
             getCartUseCase().collectLatest {
-                println(it.toString())
                 val withCalculatedPrices: List<CartItem> = calculatePrices(cart = it)
                 val totalSum: Int = calculateTotalBasketSum(cart = withCalculatedPrices)
                 _state = _state.copy(cart = withCalculatedPrices, isLoading = false, totalSum = totalSum)
@@ -58,9 +59,14 @@ class ShoppingCartViewModel @Inject constructor(
             is ShoppingCartEvent.ProductQuantityChanged -> {
                 viewModelScope.launch {
                     val updatedCartItem: CartItem = state.cart[event.index].copy(quantity = event.quantity)
-                    updateCartItemUseCase(cartItem = updatedCartItem)
+                    updateOrInsertCartItemUseCase(cartItem = updatedCartItem)
                 }
 
+            }
+            is ShoppingCartEvent.ProductRemoved -> {
+                viewModelScope.launch {
+                    removeCartItemUseCase(cartItem = state.cart[event.index])
+                }
             }
         }
     }
