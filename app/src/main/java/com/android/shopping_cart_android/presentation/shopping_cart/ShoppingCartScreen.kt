@@ -121,52 +121,42 @@ private fun BuildCartProductList(
                     .fillMaxWidth()
                     .padding(10.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillParentMaxWidth(0.5f)
-                        .align(Alignment.CenterVertically)
-                ) {
-                    Column {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = product.name,
+                        style = TextStyle(fontSize = 18.sp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = product.description,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    if (product.totalPrice != null) {
+                        Spacer(modifier = Modifier.height(5.dp))
                         Text(
-                            text = product.name,
-                            style = TextStyle(fontSize = 18.sp),
+                            text = product.totalPrice.toString(),
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold, color = Color.Red
+                            ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text(
-                            text = product.description,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        if (product.totalPrice != null) {
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Text(
-                                text = product.totalPrice.toString(),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold, color = Color.Red
-                                ),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(5.dp))
-                Row(modifier = Modifier.fillParentMaxWidth(0.3f)) {
-                    NumberPicker(
-                        value = product.quantity,
-                        range = 1..5,
-                        onValueChange = { value ->
-                            onQuantityChanged(index, value)
-                        }
-                    )
-                }
-                Spacer(Modifier.weight(1f))
-                Box {
-                    IconButton(onClick = { onItemRemoved(index) }) {
-                        Icon(imageVector = Icons.Default.Clear, contentDescription = "Remove product")
+                NumberPicker(
+                    value = product.quantity,
+                    range = 1..5,
+                    onValueChange = { value ->
+                        onQuantityChanged(index, value)
                     }
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                IconButton(onClick = { onItemRemoved(index) }) {
+                    Icon(imageVector = Icons.Default.Clear, contentDescription = "Remove product")
                 }
             }
             if (index < cartProducts.size - 1) {
