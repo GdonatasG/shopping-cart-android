@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,7 +18,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.android.shopping_cart_android.domain.CartItem
+import com.android.shopping_cart_android.domain.Product
+import com.android.shopping_cart_android.presentation.core.Screen
 import com.chargemap.compose.numberpicker.NumberPicker
 
 @Composable
@@ -41,6 +43,16 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
                     )
                 }
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(onClick = {
+                navController.navigate(Screen.ProductList.route) {
+                    launchSingleTop = true
+                    restoreState = true
+                }
+            }) {
+                Icon(Icons.Default.Add, contentDescription = "Add product")
+            }
         }
     ) {
         if (viewModel.state.isLoading) {
@@ -48,9 +60,9 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
             return@Scaffold
         }
 
-        if (viewModel.state.cart.isNotEmpty()) {
+        if (viewModel.state.cartProducts.isNotEmpty()) {
             BuildCartProductList(
-                cart = viewModel.state.cart,
+                cartProducts = viewModel.state.cartProducts,
                 onQuantityChanged = { index, quantity ->
                     viewModel.onEvent(
                         ShoppingCartEvent.ProductQuantityChanged(
@@ -98,66 +110,56 @@ private fun BuildEmptyCart() {
 
 @Composable
 private fun BuildCartProductList(
-    cart: List<CartItem>,
+    cartProducts: List<Product>,
     onQuantityChanged: (index: Int, quantity: Int) -> Unit,
     onItemRemoved: (index: Int) -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(cart) { index, cartItem ->
+        itemsIndexed(cartProducts) { index, product ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(10.dp)
             ) {
-                Box(
-                    modifier = Modifier
-                        .fillParentMaxWidth(0.5f)
-                        .align(Alignment.CenterVertically)
-                ) {
-                    Column {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = product.name,
+                        style = TextStyle(fontSize = 18.sp),
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    Spacer(modifier = Modifier.height(5.dp))
+                    Text(
+                        text = product.description,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
+                    )
+                    if (product.totalPrice != null) {
+                        Spacer(modifier = Modifier.height(5.dp))
                         Text(
-                            text = cartItem.product.name,
-                            style = TextStyle(fontSize = 18.sp),
+                            text = product.totalPrice.toString(),
+                            style = TextStyle(
+                                fontWeight = FontWeight.Bold, color = Color.Red
+                            ),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text(
-                            text = cartItem.product.description,
-                            maxLines = 2,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        if (cartItem.totalPrice != null) {
-                            Spacer(modifier = Modifier.height(5.dp))
-                            Text(
-                                text = cartItem.totalPrice.toString(),
-                                style = TextStyle(
-                                    fontWeight = FontWeight.Bold, color = Color.Red
-                                ),
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        }
                     }
                 }
                 Spacer(modifier = Modifier.height(5.dp))
-                Row(modifier = Modifier.fillParentMaxWidth(0.3f)) {
-                    NumberPicker(
-                        value = cartItem.quantity,
-                        range = 1..5,
-                        onValueChange = { value ->
-                            onQuantityChanged(index, value)
-                        }
-                    )
-                }
-                Spacer(Modifier.weight(1f))
-                Box {
-                    IconButton(onClick = { onItemRemoved(index) }) {
-                        Icon(imageVector = Icons.Default.Clear, contentDescription = "Remove product")
+                NumberPicker(
+                    value = product.quantity,
+                    range = 1..5,
+                    onValueChange = { value ->
+                        onQuantityChanged(index, value)
                     }
+                )
+                Spacer(modifier = Modifier.height(5.dp))
+                IconButton(onClick = { onItemRemoved(index) }) {
+                    Icon(imageVector = Icons.Default.Clear, contentDescription = "Remove product")
                 }
             }
-            if (index < cart.size - 1) {
+            if (index < cartProducts.size - 1) {
                 Divider()
             }
         }

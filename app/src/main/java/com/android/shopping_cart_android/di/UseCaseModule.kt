@@ -1,10 +1,7 @@
 package com.android.shopping_cart_android.di
 
-import com.android.shopping_cart_android.domain.ICartRepository
-import com.android.shopping_cart_android.domain.use_case.CalculateCartItemPriceUseCase
-import com.android.shopping_cart_android.domain.use_case.GetCartUseCase
-import com.android.shopping_cart_android.domain.use_case.RemoveCartItemUseCase
-import com.android.shopping_cart_android.domain.use_case.UpdateOrInsertCartItemUseCase
+import com.android.shopping_cart_android.domain.IProductRepository
+import com.android.shopping_cart_android.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -17,25 +14,37 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetCartUseCase(cartRepository: ICartRepository): GetCartUseCase {
-        return GetCartUseCase(cartRepository = cartRepository)
+    fun provideWatchProductsUseCase(productRepository: IProductRepository): WatchProductsUseCase {
+        return WatchProductsUseCase(productRepository = productRepository)
     }
 
     @Singleton
     @Provides
-    fun provideUpdateCartItemUseCase(cartRepository: ICartRepository): UpdateOrInsertCartItemUseCase {
-        return UpdateOrInsertCartItemUseCase(cartRepository = cartRepository)
+    fun provideUpdateCartItemUseCase(productRepository: IProductRepository): UpdateProductQuantityUseCase {
+        return UpdateProductQuantityUseCase(productRepository = productRepository)
     }
 
     @Singleton
     @Provides
-    fun provideRemoveCartItemUseCase(cartRepository: ICartRepository): RemoveCartItemUseCase {
-        return RemoveCartItemUseCase(cartRepository = cartRepository)
+    fun provideRemoveCartItemUseCase(productRepository: IProductRepository): RemoveProductFromCartUseCase {
+        return RemoveProductFromCartUseCase(productRepository = productRepository)
     }
 
     @Singleton
     @Provides
-    fun provideCalculateCartItemPriceUseCase(): CalculateCartItemPriceUseCase {
-        return CalculateCartItemPriceUseCase()
+    fun provideCalculateCartProductTotalPriceUseCase(): CalculateCartProductTotalPriceUseCase {
+        return CalculateCartProductTotalPriceUseCase()
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetRemoteProductsUseCase(productRepository: IProductRepository): GetRemoteProductsUseCase {
+        return GetRemoteProductsUseCase(productRepository = productRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideWatchProductUseCase(productRepository: IProductRepository): WatchProductUseCase {
+        return WatchProductUseCase(productRepository = productRepository)
     }
 }
