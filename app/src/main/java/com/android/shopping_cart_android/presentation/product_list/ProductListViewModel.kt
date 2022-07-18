@@ -1,4 +1,4 @@
-package com.android.shopping_cart_android.presentation.products
+package com.android.shopping_cart_android.presentation.product_list
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf

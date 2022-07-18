@@ -8,7 +8,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.compose.rememberNavController
 import com.android.shopping_cart_android.presentation.core.Screen
-import com.android.shopping_cart_android.presentation.products.ProductListScreen
+import com.android.shopping_cart_android.presentation.product_list.ProductListScreen
 import com.android.shopping_cart_android.presentation.shopping_cart.ShoppingCartScreen
 import com.android.shopping_cart_android.ui.theme.ShoppingcartandroidTheme
 import dagger.hilt.android.AndroidEntryPoint
