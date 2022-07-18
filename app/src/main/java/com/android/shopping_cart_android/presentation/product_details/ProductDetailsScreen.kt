@@ -95,17 +95,6 @@ private fun BuildProduct(product: Product, onQuantityChanged: (quantity: Int) ->
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
-                    if (product.totalPrice != null) {
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text(
-                            text = "${product.totalPrice} / total",
-                            style = TextStyle(
-                                fontWeight = FontWeight.Bold, color = Color.Red
-                            ),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                    }
                 }
                 Spacer(modifier = Modifier.height(5.dp))
                 if (product.quantity > 0) {
