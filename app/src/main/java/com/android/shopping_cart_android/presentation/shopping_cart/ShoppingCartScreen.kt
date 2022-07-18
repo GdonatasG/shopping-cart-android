@@ -43,7 +43,7 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
                         overflow = TextOverflow.Ellipsis,
                     )
                     Spacer(modifier = Modifier.width(5.dp))
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = { viewModel.onEvent(ShoppingCartEvent.CartCleared) }) {
                         Icon(Icons.Default.Delete, contentDescription = "Clear cart")
                     }
                 }

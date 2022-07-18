@@ -47,4 +47,10 @@ object UseCaseModule {
     fun provideWatchProductUseCase(productRepository: IProductRepository): WatchProductUseCase {
         return WatchProductUseCase(productRepository = productRepository)
     }
+
+    @Singleton
+    @Provides
+    fun provideRemoveAllProductsFromCartUseCase(productRepository: IProductRepository): RemoveAllProductsFromCartUseCase {
+        return RemoveAllProductsFromCartUseCase(productRepository = productRepository)
+    }
 }

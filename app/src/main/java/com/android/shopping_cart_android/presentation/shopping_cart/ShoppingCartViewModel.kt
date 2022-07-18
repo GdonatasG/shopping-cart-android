@@ -6,10 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.android.shopping_cart_android.domain.Product
-import com.android.shopping_cart_android.domain.use_case.CalculateCartProductTotalPriceUseCase
-import com.android.shopping_cart_android.domain.use_case.WatchProductsUseCase
-import com.android.shopping_cart_android.domain.use_case.RemoveProductFromCartUseCase
-import com.android.shopping_cart_android.domain.use_case.UpdateProductQuantityUseCase
+import com.android.shopping_cart_android.domain.use_case.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -21,6 +18,7 @@ class ShoppingCartViewModel @Inject constructor(
     private val updateProductQuantityUseCase: UpdateProductQuantityUseCase,
     private val removeProductFromCartUseCase: RemoveProductFromCartUseCase,
     private val calculateCartProductTotalPriceUseCase: CalculateCartProductTotalPriceUseCase,
+    private val removeAllProductsFromCartUseCase: RemoveAllProductsFromCartUseCase,
 ) : ViewModel() {
     private var _state by mutableStateOf(ShoppingCartState())
     val state: ShoppingCartState
@@ -69,6 +67,11 @@ class ShoppingCartViewModel @Inject constructor(
                 viewModelScope.launch {
                     val product: Product = state.cartProducts[event.index]
                     removeProductFromCartUseCase(productId = product.productId)
+                }
+            }
+            ShoppingCartEvent.CartCleared -> {
+                viewModelScope.launch {
+                    removeAllProductsFromCartUseCase()
                 }
             }
         }
