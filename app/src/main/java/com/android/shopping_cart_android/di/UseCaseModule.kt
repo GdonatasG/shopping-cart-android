@@ -1,10 +1,8 @@
 package com.android.shopping_cart_android.di
 
 import com.android.shopping_cart_android.domain.ICartRepository
-import com.android.shopping_cart_android.domain.use_case.CalculateCartItemPriceUseCase
-import com.android.shopping_cart_android.domain.use_case.GetCartUseCase
-import com.android.shopping_cart_android.domain.use_case.RemoveCartItemUseCase
-import com.android.shopping_cart_android.domain.use_case.UpdateOrInsertCartItemUseCase
+import com.android.shopping_cart_android.domain.IProductRepository
+import com.android.shopping_cart_android.domain.use_case.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,5 +35,11 @@ object UseCaseModule {
     @Provides
     fun provideCalculateCartItemPriceUseCase(): CalculateCartItemPriceUseCase {
         return CalculateCartItemPriceUseCase()
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetRemoteProductsUseCase(productRepository: IProductRepository): GetRemoteProductsUseCase {
+        return GetRemoteProductsUseCase(productRepository = productRepository)
     }
 }

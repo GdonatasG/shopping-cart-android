@@ -46,7 +46,7 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
         },
         floatingActionButton = {
             FloatingActionButton(onClick = {
-                navController.navigate(Screen.Products.route) {
+                navController.navigate(Screen.ProductList.route) {
                     launchSingleTop = true
                     restoreState = true
                 }
