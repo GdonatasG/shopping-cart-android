@@ -47,6 +47,7 @@ fun ProductListScreen(navController: NavController, viewModel: ProductListViewMo
             BuildInitialError(
                 cause = viewModel.state.error,
                 onRetry = {
+                    viewModel.markErrorHandled()
                     viewModel.onEvent(ProductListEvent.LoadProducts)
                 },
             )

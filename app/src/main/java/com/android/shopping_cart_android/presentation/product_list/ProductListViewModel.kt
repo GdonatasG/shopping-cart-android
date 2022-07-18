@@ -36,6 +36,10 @@ class ProductListViewModel @Inject constructor(
         }
     }
 
+    fun markErrorHandled() {
+        _state = _state.copy(error = null)
+    }
+
     fun onEvent(event: ProductListEvent) {
         when (event) {
             ProductListEvent.LoadProducts -> {
