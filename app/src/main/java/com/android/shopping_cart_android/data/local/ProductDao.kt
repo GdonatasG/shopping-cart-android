@@ -32,6 +32,9 @@ interface ProductDao {
     @Query("UPDATE products SET quantity = :quantity WHERE productId = :productId")
     suspend fun updateProductQuantity(productId: Int, quantity: Int)
 
+    @Query("UPDATE products SET quantity = 0")
+    suspend fun removeAllProductsFromCart()
+
     @Query("SELECT * FROM products WHERE products.quantity > 0")
     fun watchProducts(): Flow<List<ProductEntity>>
 
