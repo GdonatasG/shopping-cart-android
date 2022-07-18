@@ -7,6 +7,7 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +42,10 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
+                    Spacer(modifier = Modifier.width(5.dp))
+                    IconButton(onClick = { viewModel.onEvent(ShoppingCartEvent.CartCleared) }) {
+                        Icon(Icons.Default.Delete, contentDescription = "Clear cart")
+                    }
                 }
             )
         },

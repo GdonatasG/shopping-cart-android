@@ -51,4 +51,8 @@ class ProductRepository(
     override suspend fun updateOrInsert(product: Product) {
         return productDao.insertOrUpdate(product.toDatabase())
     }
+
+    override suspend fun removeAllProductsFromCart() {
+        return productDao.removeAllProductsFromCart()
+    }
 }

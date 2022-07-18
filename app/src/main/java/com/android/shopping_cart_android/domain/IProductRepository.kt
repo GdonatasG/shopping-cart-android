@@ -9,4 +9,5 @@ interface IProductRepository {
     fun watchProduct(productId: Int): Flow<Product>
     suspend fun updateProductQuantity(productId: Int, quantity: Int)
     suspend fun updateOrInsert(product: Product)
+    suspend fun removeAllProductsFromCart()
 }
