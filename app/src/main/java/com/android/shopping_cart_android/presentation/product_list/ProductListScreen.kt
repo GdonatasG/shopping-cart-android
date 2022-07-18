@@ -1,7 +1,5 @@
 package com.android.shopping_cart_android.presentation.product_list
 
-import android.os.Build
-import android.widget.Space
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,7 +8,6 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.android.shopping_cart_android.domain.Product
+import com.android.shopping_cart_android.presentation.core.Screen
 
 @Composable
 fun ProductListScreen(navController: NavController, viewModel: ProductListViewModel = hiltViewModel()) {
@@ -56,7 +54,15 @@ fun ProductListScreen(navController: NavController, viewModel: ProductListViewMo
         }
 
         if (viewModel.state.products.isNotEmpty()) {
-            BuildProductList(products = viewModel.state.products)
+            BuildProductList(
+                products = viewModel.state.products,
+                onProductClick = { product ->
+                    navController.navigate(Screen.ProductDetails.createRoute(productId = product.productId)) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                },
+            )
             return@Scaffold
         }
 
@@ -95,14 +101,14 @@ private fun BuildInitialError(cause: Exception?, onRetry: () -> Unit) {
 }
 
 @Composable
-private fun BuildProductList(products: List<Product>) {
+private fun BuildProductList(products: List<Product>, onProductClick: (product: Product) -> Unit) {
     LazyColumn {
         itemsIndexed(products) { index, product ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clickable {
-                        println("clikc!")
+                        onProductClick(product)
                     }
                     .padding(8.dp),
                 verticalAlignment = Alignment.CenterVertically,

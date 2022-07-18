@@ -8,7 +8,6 @@ import androidx.lifecycle.viewModelScope
 import com.android.shopping_cart_android.domain.use_case.GetRemoteProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +28,6 @@ class ProductListViewModel @Inject constructor(
             _state = state.copy(isLoading = true)
             try {
                 _state = _state.copy(products = getRemoteProductsUseCase() ?: emptyList())
-                println(_state.products.toString())
             } catch (cause: Exception) {
                 _state = _state.copy(error = cause)
             } finally {

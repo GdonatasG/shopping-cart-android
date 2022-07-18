@@ -14,7 +14,7 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetCartUseCase(productRepository: IProductRepository): WatchProductsUseCase {
+    fun provideWatchProductsUseCase(productRepository: IProductRepository): WatchProductsUseCase {
         return WatchProductsUseCase(productRepository = productRepository)
     }
 
@@ -32,7 +32,7 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideCalculateCartItemPriceUseCase(): CalculateCartProductTotalPriceUseCase {
+    fun provideCalculateCartProductTotalPriceUseCase(): CalculateCartProductTotalPriceUseCase {
         return CalculateCartProductTotalPriceUseCase()
     }
 
@@ -40,5 +40,11 @@ object UseCaseModule {
     @Provides
     fun provideGetRemoteProductsUseCase(productRepository: IProductRepository): GetRemoteProductsUseCase {
         return GetRemoteProductsUseCase(productRepository = productRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideWatchProductUseCase(productRepository: IProductRepository): WatchProductUseCase {
+        return WatchProductUseCase(productRepository = productRepository)
     }
 }
