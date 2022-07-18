@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import com.android.shopping_cart_android.domain.CartItem
+import com.android.shopping_cart_android.domain.Product
 import com.android.shopping_cart_android.presentation.core.Screen
 import com.chargemap.compose.numberpicker.NumberPicker
 
@@ -60,9 +60,9 @@ fun ShoppingCartScreen(navController: NavController, viewModel: ShoppingCartView
             return@Scaffold
         }
 
-        if (viewModel.state.cart.isNotEmpty()) {
+        if (viewModel.state.cartProducts.isNotEmpty()) {
             BuildCartProductList(
-                cart = viewModel.state.cart,
+                cartProducts = viewModel.state.cartProducts,
                 onQuantityChanged = { index, quantity ->
                     viewModel.onEvent(
                         ShoppingCartEvent.ProductQuantityChanged(
@@ -110,12 +110,12 @@ private fun BuildEmptyCart() {
 
 @Composable
 private fun BuildCartProductList(
-    cart: List<CartItem>,
+    cartProducts: List<Product>,
     onQuantityChanged: (index: Int, quantity: Int) -> Unit,
     onItemRemoved: (index: Int) -> Unit,
 ) {
     LazyColumn {
-        itemsIndexed(cart) { index, cartItem ->
+        itemsIndexed(cartProducts) { index, product ->
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -128,21 +128,21 @@ private fun BuildCartProductList(
                 ) {
                     Column {
                         Text(
-                            text = cartItem.product.name,
+                            text = product.name,
                             style = TextStyle(fontSize = 18.sp),
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                         )
                         Spacer(modifier = Modifier.height(5.dp))
                         Text(
-                            text = cartItem.product.description,
+                            text = product.description,
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                         )
-                        if (cartItem.totalPrice != null) {
+                        if (product.totalPrice != null) {
                             Spacer(modifier = Modifier.height(5.dp))
                             Text(
-                                text = cartItem.totalPrice.toString(),
+                                text = product.totalPrice.toString(),
                                 style = TextStyle(
                                     fontWeight = FontWeight.Bold, color = Color.Red
                                 ),
@@ -155,7 +155,7 @@ private fun BuildCartProductList(
                 Spacer(modifier = Modifier.height(5.dp))
                 Row(modifier = Modifier.fillParentMaxWidth(0.3f)) {
                     NumberPicker(
-                        value = cartItem.quantity,
+                        value = product.quantity,
                         range = 1..5,
                         onValueChange = { value ->
                             onQuantityChanged(index, value)
@@ -169,7 +169,7 @@ private fun BuildCartProductList(
                     }
                 }
             }
-            if (index < cart.size - 1) {
+            if (index < cartProducts.size - 1) {
                 Divider()
             }
         }

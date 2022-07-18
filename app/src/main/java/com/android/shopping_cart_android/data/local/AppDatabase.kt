@@ -5,10 +5,9 @@ import androidx.room.RoomDatabase
 
 
 @Database(
-    entities = [CartEntity::class, ProductEntity::class],
+    entities = [ProductEntity::class],
     version = 1,
 )
 abstract class AppDatabase : RoomDatabase() {
-    abstract val cartDao: CartDao
     abstract val productDao: ProductDao
 }

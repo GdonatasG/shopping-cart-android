@@ -1,6 +1,5 @@
 package com.android.shopping_cart_android.di
 
-import com.android.shopping_cart_android.domain.ICartRepository
 import com.android.shopping_cart_android.domain.IProductRepository
 import com.android.shopping_cart_android.domain.use_case.*
 import dagger.Module
@@ -15,26 +14,26 @@ object UseCaseModule {
 
     @Singleton
     @Provides
-    fun provideGetCartUseCase(cartRepository: ICartRepository): GetCartUseCase {
-        return GetCartUseCase(cartRepository = cartRepository)
+    fun provideGetCartUseCase(productRepository: IProductRepository): WatchProductsUseCase {
+        return WatchProductsUseCase(productRepository = productRepository)
     }
 
     @Singleton
     @Provides
-    fun provideUpdateCartItemUseCase(cartRepository: ICartRepository): UpdateOrInsertCartItemUseCase {
-        return UpdateOrInsertCartItemUseCase(cartRepository = cartRepository)
+    fun provideUpdateCartItemUseCase(productRepository: IProductRepository): UpdateProductQuantityUseCase {
+        return UpdateProductQuantityUseCase(productRepository = productRepository)
     }
 
     @Singleton
     @Provides
-    fun provideRemoveCartItemUseCase(cartRepository: ICartRepository): RemoveCartItemUseCase {
-        return RemoveCartItemUseCase(cartRepository = cartRepository)
+    fun provideRemoveCartItemUseCase(productRepository: IProductRepository): RemoveProductFromCartUseCase {
+        return RemoveProductFromCartUseCase(productRepository = productRepository)
     }
 
     @Singleton
     @Provides
-    fun provideCalculateCartItemPriceUseCase(): CalculateCartItemPriceUseCase {
-        return CalculateCartItemPriceUseCase()
+    fun provideCalculateCartItemPriceUseCase(): CalculateCartProductTotalPriceUseCase {
+        return CalculateCartProductTotalPriceUseCase()
     }
 
     @Singleton

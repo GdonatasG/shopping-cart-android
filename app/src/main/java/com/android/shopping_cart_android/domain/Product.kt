@@ -9,6 +9,7 @@ fun Product.toDatabase(): ProductEntity {
         description = description,
         costPrice = costPrice,
         retailPrice = retailPrice,
+        quantity = quantity,
     )
 }
 
@@ -18,4 +19,6 @@ data class Product(
     val description: String,
     val costPrice: Int? = null,
     val retailPrice: Int,
+    val quantity: Int = 0,
+    val totalPrice: Int? = null,
 )

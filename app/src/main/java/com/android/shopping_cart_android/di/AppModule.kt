@@ -2,11 +2,9 @@ package com.android.shopping_cart_android.di
 
 import android.app.Application
 import androidx.room.Room
-import com.android.shopping_cart_android.data.CartRepository
 import com.android.shopping_cart_android.data.ProductRepository
 import com.android.shopping_cart_android.data.local.AppDatabase
 import com.android.shopping_cart_android.data.remote.ProductService
-import com.android.shopping_cart_android.domain.ICartRepository
 import com.android.shopping_cart_android.domain.IProductRepository
 import dagger.Module
 import dagger.Provides
@@ -27,14 +25,6 @@ object AppModule {
             AppDatabase::class.java,
             "database.db"
         ).build()
-    }
-
-    @Singleton
-    @Provides
-    fun provideCartRepository(database: AppDatabase): ICartRepository {
-        return CartRepository(
-            cartDao = database.cartDao,
-        )
     }
 
     @Singleton
